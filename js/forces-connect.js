@@ -11,7 +11,7 @@ const nodes = [];
 let connections = [];
  
 function setup () {
-  const canvas = createCanvas(windowWidth, windowHeight, SVG);
+  const canvas = createCanvas(windowWidth, windowHeight);
   canvas.style('display', 'block');
   canvas.parent('container');
 
@@ -29,12 +29,7 @@ function setup () {
   nodes[0].fy = windowHeight/2;
   nodes[0].x = windowWidth/2;
   nodes[0].y = windowHeight/2;
-
-  const links = [
-    {source: 0, target: 1},
-    {source: 1, target: 2},
-    {source: 2, target: 3}
-  ];
+  
 
   simulation = d3.forceSimulation(nodes)
     .force('collision', d3.forceCollide().radius(function(d, index) {
@@ -86,9 +81,9 @@ function drawConnections() {
 
     let thisX = nodes[c[0]].x, thisY = nodes[c[0]].y, connX = nodes[c[1]].x, connY = nodes[c[1]].y;
     
-    if(c[2] < 200) {
-      nodes[c[0]].oldX = nodes[c[0]].x;
-      nodes[c[0]].oldY = nodes[c[0]].y;
+    if(c[2] < 250 /*&& c[2] > 15*/) {
+      // nodes[c[0]].oldX = nodes[c[0]].x;
+      // nodes[c[0]].oldY = nodes[c[0]].y;
 
       stroke('white');
       strokeWeight(1); 
@@ -96,19 +91,27 @@ function drawConnections() {
 
       c[2] = dist(thisX, thisY, connX, connY);
     }
+    else {
+        findConnections(nodes, c[0]);
+    }
   }
+  
   
 }
 
 function draw() {
   //background(200, 200, 250, 200);
-  background(0, 50);
+  background(180, 50);
   noStroke();
   drawConnections();
   // fill('red');
   // for (let n = 1; n < nodes.length; n++) {
   //   circle(nodes[n].x, nodes[n].y, nodes[n].radius);
   // } 
+
+  // for (let n = 0; n < nodes.length; n++) {
+  //   findConnections(nodes, n);
+  // }
 }
 
 function mouseMoved() {
