@@ -64,7 +64,7 @@ function connectNearestPoints(points, numberOfPoint) {
     pointsByDistance.push([j, distance]);
   }
   pointsByDistance.sort((a, b) => a[1] - b[1]);
-  pointsByDistance = pointsByDistance.slice(0, 6);
+  pointsByDistance = pointsByDistance.slice(0, 7);
   
   for(let j = 1; j < pointsByDistance.length; j++) {
     let pos = pointsByDistance[j][0];
@@ -89,10 +89,10 @@ function draw() {
     points[i][0] = lerp(pointsOrigin[i][0], mouseX, factor);
     points[i][1] = lerp(pointsOrigin[i][1], mouseY, factor);
 
-    stroke('red');
-    strokeWeight(10); 
+    // stroke('red');
+    // strokeWeight(10); 
     //point(points[i][0], points[i][1]);
-    stroke('black');
+    // stroke('black');
     //point(pointsOrigin[i][0], pointsOrigin[i][1]);
 
     connectNearestPoints(points, i);
