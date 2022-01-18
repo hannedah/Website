@@ -39,7 +39,7 @@ function setup () {
   ];
 
   simulation = d3.forceSimulation(nodes)
-    .force("charge", d3.forceManyBody().strength(10)) // positive > everything attracts, negative > everything repells
+    .force("charge", d3.forceManyBody().strength(-10)) // positive > everything attracts, negative > everything repells
     //.force("link", d3.forceLink(links).strength(5).distance(5))
     .force('collision', d3.forceCollide().radius(function(d, index) {
       if (index === 0) {

@@ -16,7 +16,7 @@ function setup () {
   canvas.parent('container');
 
 
-  for (let n = 0; n < 400; n += 1) {
+  for (let n = 0; n < 300; n += 1) {
     nodes.push({
       id: n,
       radius: random(7, 7),

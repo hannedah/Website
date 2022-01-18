@@ -28,7 +28,7 @@ function connectNearestPoints(points, numberOfPoint) {
   }
   pointsByDistance.sort((a, b) => a[1] - b[1]);
 
-  pointsByDistance = pointsByDistance.slice(0, 9);
+  pointsByDistance = pointsByDistance.slice(0, 10);
 
   //console.log(pointsByDistance);
 
@@ -44,48 +44,18 @@ function connectNearestPoints(points, numberOfPoint) {
   }
 }
 
-function getDistToNextPoint(x, y, points) {
-  let lowestDistance = 100;
-  let currDistance = 0;
-
-  for(let i = 0; i < points.length-1; i++) {
-    currDistance = dist(x, y, points[i][0], points[i][1]);
-    if(lowestDistance > currDistance) lowestDistance = currDistance;
-  }
-  
-  return lowestDistance;
-}
 
 
 function draw() {
   background(200);
 
   const points = [];
-
-  let rdmNum = Math.round(width / 80);
-  console.log('Breite ' + width);
-  console.log(rdmNum);
-  for(let x = 0; x < rdmNum; x++) {
-    for(let y = 0; y < (rdmNum * (height / width)); y++) {
-      stroke('pink');
-      strokeWeight(1);
-      let dist;
-      let counter = 0;
-      let xCoordinate, yCoordinate;
-
-      do {
-        xCoordinate = Math.round(random(-50, width + 50));
-        yCoordinate = Math.round(random(-50, height + 50));
-
-        dist = Math.round(getDistToNextPoint(xCoordinate, yCoordinate, points));
-        console.log(dist)
-
-        counter++;
-        if(counter > 20) dist = 1000;
-
-      } while(dist < 50)
-
-      //if(!dist == 1000) console.log(dist);
+  for(let x = 0; x < 30; x++) {
+    for(let y = 0; y < 20; y++) {
+      stroke('white');
+      strokeWeight(3); 
+      const xCoordinate = Math.round(windowWidth / 30 * x * random(0.7, 1.5));
+      const yCoordinate = Math.round(windowHeight / 20 * y * random(0.7, 1.5));
       point(xCoordinate, yCoordinate);
       points.push([xCoordinate, yCoordinate]);
     }

@@ -13,6 +13,7 @@ function setup() {
   noLoop();
 }
 
+// let simulation;
 let connections = [];
 
 function connectNearestPoints(points, numberOfPoint) {
@@ -28,64 +29,60 @@ function connectNearestPoints(points, numberOfPoint) {
   }
   pointsByDistance.sort((a, b) => a[1] - b[1]);
 
-  pointsByDistance = pointsByDistance.slice(0, 9);
+  pointsByDistance = pointsByDistance.slice(0, 10);
 
   //console.log(pointsByDistance);
 
   //for(let j = 0; j < pointsByDistance.length; j++);
+
+  let pointsConnected = 0;
   
   for(let j = 1; j < pointsByDistance.length; j++) {
     let pos = pointsByDistance[j][0];
     let c = [thisX, thisY, points[pos][0], points[pos][1]];
 
-    stroke('white');
-    strokeWeight(1); 
-    line(c[0], c[1], c[2], c[3]);
+    
+    let connectionChecker = (connections.includes([c[0], c[1], c[2], c[3]]) || connections.includes([c[2], c[3], c[0], c[1]])) ? true : false;
+    if(connectionChecker) console.log("YO")
+    //console.log(connectionChecker);
+    
+    if((!connectionChecker) && pointsConnected <= 5) {
+      pointsConnected++;
+      stroke('white');
+      strokeWeight(1); 
+      line(c[0], c[1], c[2], c[3]);
+      connections.push([c[0], c[1], c[2], c[3]]);
+      
+    }
+   
+    
   }
 }
 
-function getDistToNextPoint(x, y, points) {
-  let lowestDistance = 100;
-  let currDistance = 0;
 
-  for(let i = 0; i < points.length-1; i++) {
-    currDistance = dist(x, y, points[i][0], points[i][1]);
-    if(lowestDistance > currDistance) lowestDistance = currDistance;
-  }
-  
-  return lowestDistance;
-}
+// simulation = d3.forceSimulation(connections)
+// .force("charge", d3.forceManyBody().strength(100)) // positive > everything attracts, negative > everything repells
+// //.force("link", d3.forceLink(links).strength(5).distance(5))
+// .force('collision', d3.forceCollide().radius(function(d, index) {
+//   if (index === 0) {
+//     return 40;
+//   }
+//   return d.radius / 2 + 4;
+// }))
+// //.force("center", d3.forceCenter(mouseX, mouseY));
 
 
 function draw() {
   background(200);
+  
 
   const points = [];
-
-  let rdmNum = Math.round(width / 80);
-  console.log('Breite ' + width);
-  console.log(rdmNum);
-  for(let x = 0; x < rdmNum; x++) {
-    for(let y = 0; y < (rdmNum * (height / width)); y++) {
-      stroke('pink');
-      strokeWeight(1);
-      let dist;
-      let counter = 0;
-      let xCoordinate, yCoordinate;
-
-      do {
-        xCoordinate = Math.round(random(-50, width + 50));
-        yCoordinate = Math.round(random(-50, height + 50));
-
-        dist = Math.round(getDistToNextPoint(xCoordinate, yCoordinate, points));
-        console.log(dist)
-
-        counter++;
-        if(counter > 20) dist = 1000;
-
-      } while(dist < 50)
-
-      //if(!dist == 1000) console.log(dist);
+  for(let x = 0; x < 30; x++) {
+    for(let y = 0; y < 20; y++) {
+      stroke('white');
+      strokeWeight(3); 
+      const xCoordinate = Math.round(windowWidth / 30 * x * random(0.7, 1.5));
+      const yCoordinate = Math.round(windowHeight / 20 * y * random(0.7, 1.5));
       point(xCoordinate, yCoordinate);
       points.push([xCoordinate, yCoordinate]);
     }
@@ -96,9 +93,13 @@ function draw() {
     connectNearestPoints(points, i)
   }
 
-
-
 }
+
+// function mouseMoved() {
+//   // connections[0].fx = mouseX;
+//   // connections[0].fy = mouseY;
+//   simulation.alpha(1);
+// }
 
 // function windowResized() {
 //   resizeCanvas(windowWidth, windowHeight);

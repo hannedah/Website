@@ -17,7 +17,7 @@ function setup() {
   
 
   
-  let dividerX = width / 160;
+  let dividerX = width / 70;
   let offsetFactor = 0.7 * 0.5;
   
   let blockWidthX = Math.round(width / dividerX);
@@ -46,10 +46,11 @@ function setup() {
 
        // point(xCoordinate, yCoordinate);
         pointsOrigin.push([xCoordinate, yCoordinate]);
-        points.push([xCoordinate, yCoordinate]);
 
     }
   }
+
+  points = pointsOrigin;
 }
 
 let connections = [];
@@ -64,7 +65,7 @@ function connectNearestPoints(points, numberOfPoint) {
     pointsByDistance.push([j, distance]);
   }
   pointsByDistance.sort((a, b) => a[1] - b[1]);
-  pointsByDistance = pointsByDistance.slice(0, 7);
+  pointsByDistance = pointsByDistance.slice(0, 10);
   
   for(let j = 1; j < pointsByDistance.length; j++) {
     let pos = pointsByDistance[j][0];
@@ -83,17 +84,17 @@ function draw() {
   background(200);
   
   for(let i = 0; i < points.length; i++) {
-    let distance = constrain(norm(dist(pointsOrigin[i][0],pointsOrigin[i][1],mouseX,mouseY)/600,0,1),0,1); 
+    let distance=constrain(norm(dist(points[i][0],points[i][1],mouseX,mouseY)/500,0,1),0,1); 
     let factor = lerp(0,1,constrain(map(distance,0,0.5,1,0),0,1));
 
     points[i][0] = lerp(pointsOrigin[i][0], mouseX, factor);
     points[i][1] = lerp(pointsOrigin[i][1], mouseY, factor);
 
-    // stroke('red');
-    // strokeWeight(10); 
-    //point(points[i][0], points[i][1]);
-    // stroke('black');
-    //point(pointsOrigin[i][0], pointsOrigin[i][1]);
+    stroke('red');
+    strokeWeight(10); 
+    point(points[i][0], points[i][1]);
+    stroke('black');
+    point(pointsOrigin[i][0], pointsOrigin[i][1]);
 
     connectNearestPoints(points, i);
   }

@@ -6,97 +6,103 @@ function reportWindowSize() {
 
 window.addEventListener('resize', reportWindowSize)
 
-function setup() {
-  const canvas = createCanvas(windowWidth, windowHeight, SVG);
-  canvas.style('display', 'block');
-  canvas.parent('container');
-  noLoop();
-}
-
+let simulation;
+const nodes = [];
 let connections = [];
 
-function connectNearestPoints(points, numberOfPoint) {
-  let pointsByDistance = [];
-  
-  const thisX = points[numberOfPoint][0];
-  const thisY = points[numberOfPoint][1];
-  for(let j = 0; j < points.length; j++) {
+function setup () {
+  const canvas = createCanvas(windowWidth, windowHeight);
+  canvas.style('display', 'block');
+  canvas.parent('container');
 
-    // points[j] - point(j);
-    let distance = dist(thisX, thisY, points[j][0], points[j][1]);
-    pointsByDistance.push([j, distance]);
+
+  for (let n = 0; n < 300; n += 1) {
+    nodes.push({
+      id: n,
+      radius: random(5, 5),
+      x: random(0, windowWidth),
+      y: random(0, windowHeight)
+    });
   }
-  pointsByDistance.sort((a, b) => a[1] - b[1]);
 
-  pointsByDistance = pointsByDistance.slice(0, 10);
+  nodes[0].fx = windowWidth/2;
+  nodes[0].fy = windowHeight/2;
+  nodes[0].x = windowWidth/2;
+  nodes[0].y = windowHeight/2;
 
-  //console.log(pointsByDistance);
+  const links = [
+    {source: 0, target: 1},
+    {source: 1, target: 2},
+    {source: 2, target: 3}
+  ];
 
-  //for(let j = 0; j < pointsByDistance.length; j++);
+  simulation = d3.forceSimulation(nodes)
+    //.force("charge", d3.forceManyBody().strength(20))
+    //.force("link", d3.forceLink(links).strength(5).distance(5))
+    .force('collision', d3.forceCollide().radius(function(d, index) {
+      if (index === 0) {
+        return 40;
+      }
+      return d.radius / 2 + 4;
+    }))
+    //.force("center", d3.forceCenter(windowWidth/2, windowHeight/2));
+
+  ellipseMode(CENTER);
+}
+
+function connectNearestNodes(nodes, numberOfNode) {
+  let nodesByDistance = [];
   
-  for(let j = 1; j < pointsByDistance.length; j++) {
-    let pos = pointsByDistance[j][0];
-    let c = [thisX, thisY, points[pos][0], points[pos][1]];
+  const thisX = nodes[numberOfNode][0];
+  const thisY = nodes[numberOfNode][1];
+  for(let n = 0; n < nodes.length; n++) {
 
-    stroke('white');
-    strokeWeight(1); 
-    line(c[0], c[1], c[2], c[3]);
+    // nodes[n] - node(n);
+    let distance = dist(thisX, thisY, nodes[n][0], nodes[n][1]);
+    nodesByDistance.push([n, distance]);
+  }
+  nodesByDistance.sort((a, b) => a[1] - b[1]);
+
+  nodesByDistance = nodesByDistance.slice(0, 10);
+
+  //console.log(nodesByDistance);
+
+  //for(let n = 0; n < nodesByDistance.length; n++);
+
+  let nodesConnected = 0;
+  
+  for(let n = 1; n < nodesByDistance.length; n++) {
+    let pos = nodesByDistance[n][0];
+    let c = [thisX, thisY, nodes[pos][0], nodes[pos][1]];
+
+    
+    let connectionChecker = (connections.includes([c[0], c[1], c[2], c[3]]) || connections.includes([c[2], c[3], c[0], c[1]])) ? true : false;
+    if(connectionChecker) console.log("test")
+    //console.log(connectionChecker);
+    
+    if((!connectionChecker) && nodesConnected <= 5) {
+      nodesConnected++;
+      stroke('red');
+      strokeWeight(1); 
+      line(c[0], c[1], c[2], c[3]);
+      connections.push([c[0], c[1], c[2], c[3]]);
+      
+    }
   }
 }
 
 function draw() {
   background(200);
-
-  const points = [];
-  
-  let dividerX = width / 70;
-  let offsetFactor = 0.7 * 0.5;
-  
-  let blockWidthX = Math.round(width / dividerX);
-  let numberBlocksX = Math.round(width / blockWidthX);
-  let dividerY = dividerX * (height / width);
-  let blockWidthY = Math.round(height / dividerY);
-  let numberBlocksY = Math.round(height / blockWidthY);
-
-  console.log('Breite ' + width);
-  for(let x = -5; x < numberBlocksX + 5; x++) {
-    for(let y = -5; y < numberBlocksY + 5; y++) {
-      
-      let numberOfCoordinates = round(random(1, 1));
-
-      while(numberOfCoordinates > 0) {
-        xCoordinate = x * blockWidthX + blockWidthX / 2;
-        yCoordinate = y * blockWidthY + blockWidthY / 2;
-
-        let rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthX;
-        xCoordinate += rdmOffset;
-        rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthY;
-        yCoordinate += rdmOffset;
-
-        numberOfCoordinates--;
-
-        point(xCoordinate, yCoordinate);
-        points.push([xCoordinate, yCoordinate]);
-      } 
-    }
+  noStroke();
+  fill('blue');
+  for (let n = 0; n < nodes.length; n++) {
+    circle(nodes[n].x, nodes[n].y, nodes[n].radius);
+    //connectNearestNodes(nodes, n);
   }
-  //console.log(points);
-
-  for(let i = 0; i < points.length; i++) {
-    connectNearestPoints(points, i)
-  }
-
-
 }
 
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-//   if(windowHeight > windowWidth){
-//     factor = windowHeight;
-//     factdiv = 1080;
-//   }else{
-//     factor = windowWidth;
-//     factdiv = 1920;
-//   }
-// }
+function mouseMoved() {
+  nodes[0].fx = mouseX;
+  nodes[0].fy = mouseY;
+  simulation.alpha(1);
+}

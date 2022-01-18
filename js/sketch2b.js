@@ -13,7 +13,6 @@ function setup() {
   noLoop();
 }
 
-// let simulation;
 let connections = [];
 
 function connectNearestPoints(points, numberOfPoint) {
@@ -34,56 +33,51 @@ function connectNearestPoints(points, numberOfPoint) {
   //console.log(pointsByDistance);
 
   //for(let j = 0; j < pointsByDistance.length; j++);
-
-  let pointsConnected = 0;
   
   for(let j = 1; j < pointsByDistance.length; j++) {
     let pos = pointsByDistance[j][0];
     let c = [thisX, thisY, points[pos][0], points[pos][1]];
 
-    
-    let connectionChecker = (connections.includes([c[0], c[1], c[2], c[3]]) || connections.includes([c[2], c[3], c[0], c[1]])) ? true : false;
-    if(connectionChecker) console.log("YO")
-    //console.log(connectionChecker);
-    
-    if((!connectionChecker) && pointsConnected <= 5) {
-      pointsConnected++;
-      stroke('white');
-      strokeWeight(1); 
-      line(c[0], c[1], c[2], c[3]);
-      connections.push([c[0], c[1], c[2], c[3]]);
-      
-    }
-   
-    
+    stroke('white');
+    strokeWeight(1); 
+    line(c[0], c[1], c[2], c[3]);
   }
 }
-
-
-// simulation = d3.forceSimulation(connections)
-// .force("charge", d3.forceManyBody().strength(100)) // positive > everything attracts, negative > everything repells
-// //.force("link", d3.forceLink(links).strength(5).distance(5))
-// .force('collision', d3.forceCollide().radius(function(d, index) {
-//   if (index === 0) {
-//     return 40;
-//   }
-//   return d.radius / 2 + 4;
-// }))
-// //.force("center", d3.forceCenter(mouseX, mouseY));
-
 
 function draw() {
   background(200);
 
   const points = [];
-  for(let x = 0; x < 30; x++) {
-    for(let y = 0; y < 20; y++) {
-      stroke('white');
-      strokeWeight(3); 
-      const xCoordinate = Math.round(windowWidth / 30 * x * random(0.7, 1.5));
-      const yCoordinate = Math.round(windowHeight / 20 * y * random(0.7, 1.5));
-      point(xCoordinate, yCoordinate);
-      points.push([xCoordinate, yCoordinate]);
+  
+  let dividerX = width / 70;
+  let offsetFactor = 0.7 * 0.5;
+  
+  let blockWidthX = Math.round(width / dividerX);
+  let numberBlocksX = Math.round(width / blockWidthX);
+  let dividerY = dividerX * (height / width);
+  let blockWidthY = Math.round(height / dividerY);
+  let numberBlocksY = Math.round(height / blockWidthY);
+
+  console.log('Breite ' + width);
+  for(let x = -5; x < numberBlocksX + 5; x++) {
+    for(let y = -5; y < numberBlocksY + 5; y++) {
+      
+      let numberOfCoordinates = round(random(1, 1));
+
+      while(numberOfCoordinates > 0) {
+        xCoordinate = x * blockWidthX + blockWidthX / 2;
+        yCoordinate = y * blockWidthY + blockWidthY / 2;
+
+        let rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthX;
+        xCoordinate += rdmOffset;
+        rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthY;
+        yCoordinate += rdmOffset;
+
+        numberOfCoordinates--;
+
+        point(xCoordinate, yCoordinate);
+        points.push([xCoordinate, yCoordinate]);
+      } 
     }
   }
   //console.log(points);
@@ -92,13 +86,9 @@ function draw() {
     connectNearestPoints(points, i)
   }
 
+
 }
 
-// function mouseMoved() {
-//   // connections[0].fx = mouseX;
-//   // connections[0].fy = mouseY;
-//   simulation.alpha(1);
-// }
 
 // function windowResized() {
 //   resizeCanvas(windowWidth, windowHeight);
