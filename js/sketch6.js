@@ -45,7 +45,6 @@ function setup () {
   for (let n = 0; n < nodes.length; n++) {
     findConnections(nodes, n);
   }
-  //console.log(nodes);
 }
 
 function findConnections(nodes, numberOfNode) {
@@ -54,7 +53,6 @@ function findConnections(nodes, numberOfNode) {
   const thisX = nodes[numberOfNode].x;
   const thisY = nodes[numberOfNode].y;
   for(let n = 0; n < nodes.length; n++) {
-    // nodes[n] - node(n);
     let distance = dist(thisX, thisY, nodes[n].x, nodes[n].y);
     if(!(n == 0 || numberOfNode == 0)) nodesByDistance.push([n, distance]);
   }
@@ -70,7 +68,6 @@ function findConnections(nodes, numberOfNode) {
     
     if((!connectionChecker)) {
       connections.push([numberOfNode, numberOfConnectedNode]);
-      //console.log(connections[n]);
     }
   }
 }
@@ -83,7 +80,6 @@ function drawConnections() {
     if(!(nodes[c[0]].x == nodes[c[0]].oldX && nodes[c[0]].y == nodes[c[0]].oldY)) {
       nodes[c[0]].oldX = nodes[c[0]].x;
       nodes[c[0]].oldY = nodes[c[0]].y;
-
       stroke('red');
       strokeWeight(1); 
       line(nodes[c[0]].x, nodes[c[0]].y, nodes[c[1]].x, nodes[c[1]].y);
@@ -99,7 +95,6 @@ function draw() {
   for (let n = 1; n < nodes.length; n++) {
     circle(nodes[n].x, nodes[n].y, nodes[n].radius);
   }
-
   drawConnections();
 }
 

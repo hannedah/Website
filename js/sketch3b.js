@@ -14,9 +14,6 @@ function setup() {
   canvas.style('display', 'block');
   canvas.parent('container');
 
-  
-
-  
   let dividerX = width / 70;
   let offsetFactor = 0.7 * 0.5;
   
@@ -39,12 +36,6 @@ function setup() {
         rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthY;
         yCoordinate += rdmOffset;
 
-
-
-
-
-
-       // point(xCoordinate, yCoordinate);
         pointsOrigin.push([xCoordinate, yCoordinate]);
 
     }
@@ -79,8 +70,6 @@ function connectNearestPoints(points, numberOfPoint) {
 
 function draw() {
 
-  //console.log(points);
-
   background(200);
   
   for(let i = 0; i < points.length; i++) {
@@ -99,15 +88,3 @@ function draw() {
     connectNearestPoints(points, i);
   }
 }
-
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-//   if(windowHeight > windowWidth){
-//     factor = windowHeight;
-//     factdiv = 1080;
-//   }else{
-//     factor = windowWidth;
-//     factdiv = 1920;
-//   }
-// }

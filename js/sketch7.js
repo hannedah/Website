@@ -22,8 +22,6 @@ function setup () {
       radius: random(7, 7),
       x: random(-50, windowWidth + 50),
       y: random(-50, windowHeight + 50),
-      // fx: 0, // fixed position
-      // fy: 0,
     });
   }
 
@@ -40,21 +38,18 @@ function setup () {
 
   simulation = d3.forceSimulation(nodes)
     .force("charge", d3.forceManyBody().strength(10)) // positive > everything attracts, negative > everything repells
-    //.force("link", d3.forceLink(links).strength(5).distance(5))
     .force('collision', d3.forceCollide().radius(function(d, index) {
       if (index === 0) {
         return 40;
       }
       return d.radius / 2 + 5;
     }))
-    //.force("center", d3.forceCenter(windowWidth/2, windowHeight/2));
 
   ellipseMode(CENTER);
 
   for (let n = 0; n < nodes.length; n++) {
     findConnections(nodes, n);
   }
-  //console.log(nodes);
 }
 
 function findConnections(nodes, numberOfNode) {
@@ -63,7 +58,6 @@ function findConnections(nodes, numberOfNode) {
   const thisX = nodes[numberOfNode].x;
   const thisY = nodes[numberOfNode].y;
   for(let n = 0; n < nodes.length; n++) {
-    // nodes[n] - node(n);
     let distance = dist(thisX, thisY, nodes[n].x, nodes[n].y);
     if(!(n == 0 || numberOfNode == 0)) nodesByDistance.push([n, distance]);
   }
@@ -80,7 +74,6 @@ function findConnections(nodes, numberOfNode) {
     
     if((!connectionChecker)) {
       connections.push([numberOfNode, numberOfConnectedNode, distance]);
-      //console.log(connections[n]);
     }
   }
 }
@@ -92,9 +85,6 @@ function drawConnections() {
     let thisX = nodes[c[0]].x, thisY = nodes[c[0]].y, connX = nodes[c[1]].x, connY = nodes[c[1]].y;
     
     if(c[2] < 200) {
-      nodes[c[0]].oldX = nodes[c[0]].x;
-      nodes[c[0]].oldY = nodes[c[0]].y;
-
       stroke('white');
       strokeWeight(1); 
       line(thisX, thisY, connX, connY);

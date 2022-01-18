@@ -22,7 +22,6 @@ function connectNearestPoints(points, numberOfPoint) {
   const thisY = points[numberOfPoint][1];
   for(let j = 0; j < points.length; j++) {
 
-    // points[j] - point(j);
     let distance = dist(thisX, thisY, points[j][0], points[j][1]);
     pointsByDistance.push([j, distance]);
   }
@@ -30,10 +29,6 @@ function connectNearestPoints(points, numberOfPoint) {
 
   pointsByDistance = pointsByDistance.slice(0, 10);
 
-  //console.log(pointsByDistance);
-
-  //for(let j = 0; j < pointsByDistance.length; j++);
-  
   for(let j = 1; j < pointsByDistance.length; j++) {
     let pos = pointsByDistance[j][0];
     let c = [thisX, thisY, points[pos][0], points[pos][1]];
@@ -80,7 +75,6 @@ function draw() {
       } 
     }
   }
-  //console.log(points);
 
   for(let i = 0; i < points.length; i++) {
     connectNearestPoints(points, i)

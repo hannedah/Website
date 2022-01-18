@@ -30,8 +30,6 @@ function connectNearestPoints(points, numberOfPoint) {
 
   pointsByDistance = pointsByDistance.slice(0, 9);
 
-  //console.log(pointsByDistance);
-
   //for(let j = 0; j < pointsByDistance.length; j++);
   
   for(let j = 1; j < pointsByDistance.length; j++) {
@@ -90,7 +88,6 @@ function draw() {
       points.push([xCoordinate, yCoordinate]);
     }
   }
-  //console.log(points);
 
   for(let i = 0; i < points.length; i++) {
     connectNearestPoints(points, i)

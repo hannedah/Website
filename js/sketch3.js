@@ -30,7 +30,6 @@ function setup() {
   for(let x = -5; x < numberBlocksX + 5; x++) {
     for(let y = -5; y < numberBlocksY + 5; y++) {
       
-
         xCoordinate = x * blockWidthX + blockWidthX / 2;
         yCoordinate = y * blockWidthY + blockWidthY / 2;
 
@@ -39,12 +38,6 @@ function setup() {
         rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthY;
         yCoordinate += rdmOffset;
 
-
-
-
-
-
-       // point(xCoordinate, yCoordinate);
         pointsOrigin.push([xCoordinate, yCoordinate]);
 
     }
@@ -78,9 +71,6 @@ function connectNearestPoints(points, numberOfPoint) {
 }
 
 function draw() {
-
-  //console.log(points);
-
   background(200);
   
   for(let i = 0; i < points.length; i++) {
@@ -93,15 +83,3 @@ function draw() {
     connectNearestPoints(points, i);
   }
 }
-
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-//   if(windowHeight > windowWidth){
-//     factor = windowHeight;
-//     factdiv = 1080;
-//   }else{
-//     factor = windowWidth;
-//     factdiv = 1920;
-//   }
-// }

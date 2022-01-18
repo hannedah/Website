@@ -13,9 +13,6 @@ function setup() {
   const canvas = createCanvas(windowWidth, windowHeight, SVG);
   canvas.style('display', 'block');
   canvas.parent('container');
-
-  
-
   
   let dividerX = width / 160;
   let offsetFactor = 0.7 * 0.5;
@@ -29,7 +26,6 @@ function setup() {
   console.log('Breite ' + width);
   for(let x = -5; x < numberBlocksX + 5; x++) {
     for(let y = -5; y < numberBlocksY + 5; y++) {
-      
 
         xCoordinate = x * blockWidthX + blockWidthX / 2;
         yCoordinate = y * blockWidthY + blockWidthY / 2;
@@ -39,12 +35,6 @@ function setup() {
         rdmOffset = random(-offsetFactor, offsetFactor) * blockWidthY;
         yCoordinate += rdmOffset;
 
-
-
-
-
-
-       // point(xCoordinate, yCoordinate);
         pointsOrigin.push([xCoordinate, yCoordinate]);
         points.push([xCoordinate, yCoordinate]);
 
@@ -78,8 +68,6 @@ function connectNearestPoints(points, numberOfPoint) {
 
 function draw() {
 
-  //console.log(points);
-
   background(200);
   
   for(let i = 0; i < points.length; i++) {
@@ -89,24 +77,13 @@ function draw() {
     points[i][0] = lerp(pointsOrigin[i][0], mouseX, factor);
     points[i][1] = lerp(pointsOrigin[i][1], mouseY, factor);
 
-    // stroke('red');
-    // strokeWeight(10); 
-    //point(points[i][0], points[i][1]);
-    // stroke('black');
-    //point(pointsOrigin[i][0], pointsOrigin[i][1]);
+    //show points and points of origin
+    stroke('red');
+    strokeWeight(10); 
+    point(points[i][0], points[i][1]);
+    stroke('black');
+    point(pointsOrigin[i][0], pointsOrigin[i][1]);
 
     connectNearestPoints(points, i);
   }
 }
-
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-//   if(windowHeight > windowWidth){
-//     factor = windowHeight;
-//     factdiv = 1080;
-//   }else{
-//     factor = windowWidth;
-//     factdiv = 1920;
-//   }
-// }

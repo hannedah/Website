@@ -60,23 +60,8 @@ function draw() {
       points.push([xCoordinate, yCoordinate]);
     }
   }
-  //console.log(points);
 
   for(let i = 0; i < points.length; i++) {
     connectNearestPoints(points, i)
   }
-
-
-
 }
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-//   if(windowHeight > windowWidth){
-//     factor = windowHeight;
-//     factdiv = 1080;
-//   }else{
-//     factor = windowWidth;
-//     factdiv = 1920;
-//   }
-// }

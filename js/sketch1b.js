@@ -13,7 +13,7 @@ function setup() {
   noLoop();
 }
 
-// let simulation;
+
 let connections = [];
 
 function connectNearestPoints(points, numberOfPoint) {
@@ -23,7 +23,6 @@ function connectNearestPoints(points, numberOfPoint) {
   const thisY = points[numberOfPoint][1];
   for(let j = 0; j < points.length; j++) {
 
-    // points[j] - point(j);
     let distance = dist(thisX, thisY, points[j][0], points[j][1]);
     pointsByDistance.push([j, distance]);
   }
@@ -31,9 +30,6 @@ function connectNearestPoints(points, numberOfPoint) {
 
   pointsByDistance = pointsByDistance.slice(0, 10);
 
-  //console.log(pointsByDistance);
-
-  //for(let j = 0; j < pointsByDistance.length; j++);
 
   let pointsConnected = 0;
   
@@ -44,7 +40,6 @@ function connectNearestPoints(points, numberOfPoint) {
     
     let connectionChecker = (connections.includes([c[0], c[1], c[2], c[3]]) || connections.includes([c[2], c[3], c[0], c[1]])) ? true : false;
     if(connectionChecker) console.log("YO")
-    //console.log(connectionChecker);
     
     if((!connectionChecker) && pointsConnected <= 5) {
       pointsConnected++;
@@ -58,19 +53,6 @@ function connectNearestPoints(points, numberOfPoint) {
     
   }
 }
-
-
-// simulation = d3.forceSimulation(connections)
-// .force("charge", d3.forceManyBody().strength(100)) // positive > everything attracts, negative > everything repells
-// //.force("link", d3.forceLink(links).strength(5).distance(5))
-// .force('collision', d3.forceCollide().radius(function(d, index) {
-//   if (index === 0) {
-//     return 40;
-//   }
-//   return d.radius / 2 + 4;
-// }))
-// //.force("center", d3.forceCenter(mouseX, mouseY));
-
 
 function draw() {
   background(200);
@@ -87,27 +69,9 @@ function draw() {
       points.push([xCoordinate, yCoordinate]);
     }
   }
-  //console.log(points);
+
 
   for(let i = 0; i < points.length; i++) {
     connectNearestPoints(points, i)
   }
-
 }
-
-// function mouseMoved() {
-//   // connections[0].fx = mouseX;
-//   // connections[0].fy = mouseY;
-//   simulation.alpha(1);
-// }
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-//   if(windowHeight > windowWidth){
-//     factor = windowHeight;
-//     factdiv = 1080;
-//   }else{
-//     factor = windowWidth;
-//     factdiv = 1920;
-//   }
-// }

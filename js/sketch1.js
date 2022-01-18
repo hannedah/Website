@@ -1,6 +1,6 @@
 function reportWindowSize() {
   const container = document.querySelector('#container')
-
+  
   resizeCanvas(window.innerWidth / 0.5, window.innerHeight)
 }
 
@@ -21,18 +21,12 @@ function connectNearestPoints(points, numberOfPoint) {
   const thisX = points[numberOfPoint][0];
   const thisY = points[numberOfPoint][1];
   for(let j = 0; j < points.length; j++) {
-
-    // points[j] - point(j);
     let distance = dist(thisX, thisY, points[j][0], points[j][1]);
     pointsByDistance.push([j, distance]);
   }
   pointsByDistance.sort((a, b) => a[1] - b[1]);
 
   pointsByDistance = pointsByDistance.slice(0, 10);
-
-  //console.log(pointsByDistance);
-
-  //for(let j = 0; j < pointsByDistance.length; j++);
 
   let pointsConnected = 0;
   
@@ -43,7 +37,6 @@ function connectNearestPoints(points, numberOfPoint) {
     
     let connectionChecker = (connections.includes([c[0], c[1], c[2], c[3]]) || connections.includes([c[2], c[3], c[0], c[1]])) ? true : false;
     if(connectionChecker) console.log("YO")
-    //console.log(connectionChecker);
     
     if((!connectionChecker) && pointsConnected <= 5) {
       pointsConnected++;
@@ -51,13 +44,9 @@ function connectNearestPoints(points, numberOfPoint) {
       strokeWeight(1); 
       line(c[0], c[1], c[2], c[3]);
       connections.push([c[0], c[1], c[2], c[3]]);
-      
     }
-   
-    
   }
 }
-
 
 
 function draw() {
@@ -74,7 +63,6 @@ function draw() {
       points.push([xCoordinate, yCoordinate]);
     }
   }
-  //console.log(points);
 
   for(let i = 0; i < points.length; i++) {
     connectNearestPoints(points, i)
