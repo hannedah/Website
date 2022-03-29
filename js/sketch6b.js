@@ -6,6 +6,7 @@ function reportWindowSize() {
 
 window.addEventListener('resize', reportWindowSize)
 
+let palette = ["#ff8859", "#56a1c4", "#ee726b", "#ffc5c7", "#fef9c6", "#df5f50", "#f5b800", "#ffcc4d", "#e590b8"];
 let simulation;
 const nodes = [];
 let connections = [];
@@ -19,7 +20,7 @@ function setup () {
   for (let n = 0; n < 300; n += 1) {
     nodes.push({
       id: n,
-      radius: random(4, 4),
+      radius: 3,
       x: random(-50, windowWidth + 50),
       y: random(-50, windowHeight + 50),
     });
@@ -34,7 +35,7 @@ function setup () {
   simulation = d3.forceSimulation(nodes)
     .force('collision', d3.forceCollide().radius(function(d, index) {
       if (index === 0) {
-        return 40;
+        return 30;
       }
       return d.radius / 2 + 4;
     }))
@@ -73,6 +74,9 @@ function findConnections(nodes, numberOfNode) {
 }
 
 function drawConnections() {
+  //stroke(random(palette));
+  stroke("#df5f50");
+  strokeWeight(1); 
 
   for(let i = 0; i < connections.length; i++) {
     let c = connections[i];
@@ -80,19 +84,16 @@ function drawConnections() {
     if(!(nodes[c[0]].x == nodes[c[0]].oldX && nodes[c[0]].y == nodes[c[0]].oldY)) {
       nodes[c[0]].oldX = nodes[c[0]].x;
       nodes[c[0]].oldY = nodes[c[0]].y;
-      stroke('blue');
-      strokeWeight(1); 
       line(nodes[c[0]].x, nodes[c[0]].y, nodes[c[1]].x, nodes[c[1]].y);
     }
   }
-
-  oldConnections = connections.slice();
+  //oldConnections = connections.slice();
 }
 
 function draw() {
-  noStroke();
   drawConnections();
   fill('white');
+  noStroke();
   for (let n = 1; n < nodes.length; n++) {
     circle(nodes[n].x, nodes[n].y, nodes[n].radius);
   }
